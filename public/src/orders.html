@@ -1,0 +1,35 @@
+﻿<template>
+    <div class="cols-xs-10">
+        <table class="table table-bordered table-striped table-hover sortable" >
+            <thead>
+                <tr>
+                    <th class="col-xs-4" data-defaultsort="asc" data-sortcolumn="0" data-sortkey="0-1"> Restaurant</th>
+                    <th class="col-xs-2" data-defaultsort="asc" data-sortcolumn="1" data-sortkey="0-1"> Deadline</th>
+                    <th class="col-xs-2" data-defaultsort="asc" data-sortcolumn="1" data-sortkey="0-1"> Status</th>
+                    <th class="col-xs-2" data-defaultsort="asc" data-sortcolumn="1" data-sortkey="0-1"> Id</th>
+                    <th class="col-xs-2" data-defaultsort="asc" data-sortcolumn="1" data-sortkey="0-1"> Action</th>
+                </tr>
+            </thead>
+            <tbody >
+                <template repeat.for ="order of orders">
+                    <compose view="widgets/view.html"></compose>
+                </template>
+                
+                <tr>
+                    <td>
+                        <input class="form-control" type="text" value.bind="newItem.RestaurantName"/>
+                    </td>
+                    <td>
+                        <input class="form-control" type="text" value.bind="newItem.Deadline"/>
+                    </td>
+                    <td>
+                        <input class="form-control" type="text" value.bind="newItem.Status" />
+                    </td>
+                    <td></td>
+                    <td><a href="#" class="btn btn-success" click.delegate="addOrder()">Add</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</template>
