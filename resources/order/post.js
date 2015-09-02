@@ -1,0 +1,1 @@
+emit('order:create', this.id);

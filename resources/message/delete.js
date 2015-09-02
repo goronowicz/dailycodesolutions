@@ -1,0 +1,1 @@
+emit('message:delete', this);

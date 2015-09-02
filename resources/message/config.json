@@ -1,0 +1,29 @@
+{
+	"type": "Collection",
+	"properties": {
+		"UserName": {
+			"name": "UserName",
+			"type": "string",
+			"typeLabel": "string",
+			"required": false,
+			"id": "UserName",
+			"order": 0
+		},
+		"orderId": {
+			"name": "orderId",
+			"type": "string",
+			"typeLabel": "string",
+			"required": false,
+			"id": "orderId",
+			"order": 1
+		},
+		"Message": {
+			"name": "Message",
+			"type": "string",
+			"typeLabel": "string",
+			"required": false,
+			"id": "Message",
+			"order": 2
+		}
+	}
+}

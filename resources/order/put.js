@@ -1,0 +1,1 @@
+emit('order:update', this.id);

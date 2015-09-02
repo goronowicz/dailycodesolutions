@@ -1,0 +1,21 @@
+{
+	"type": "Collection",
+	"properties": {
+		"Name": {
+			"name": "Name",
+			"type": "string",
+			"typeLabel": "string",
+			"required": false,
+			"id": "Name",
+			"order": 0
+		},
+		"MenuItems": {
+			"name": "MenuItems",
+			"type": "array",
+			"typeLabel": "array",
+			"required": false,
+			"id": "MenuItems",
+			"order": 1
+		}
+	}
+}

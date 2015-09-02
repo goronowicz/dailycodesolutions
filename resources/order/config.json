@@ -1,0 +1,45 @@
+{
+	"type": "Collection",
+	"properties": {
+		"Deadline": {
+			"name": "Deadline",
+			"type": "string",
+			"typeLabel": "string",
+			"required": true,
+			"id": "Deadline",
+			"order": 0
+		},
+		"Status": {
+			"name": "Status",
+			"type": "string",
+			"typeLabel": "string",
+			"required": false,
+			"id": "Status",
+			"order": 1
+		},
+		"Restaurant": {
+			"name": "Restaurant",
+			"type": "object",
+			"typeLabel": "object",
+			"required": false,
+			"id": "Restaurant",
+			"order": 2
+		},
+		"Items": {
+			"name": "Items",
+			"type": "array",
+			"typeLabel": "array",
+			"required": false,
+			"id": "Items",
+			"order": 3
+		},
+		"Notify": {
+			"name": "Notify",
+			"type": "object",
+			"typeLabel": "object",
+			"required": false,
+			"id": "Notify",
+			"order": 4
+		}
+	}
+}

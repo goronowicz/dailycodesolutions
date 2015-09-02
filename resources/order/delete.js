@@ -1,0 +1,1 @@
+emit('order:delete', this.id);
