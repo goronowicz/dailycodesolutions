@@ -11,10 +11,16 @@
                 </tr>
             </thead>
             <tbody >
-                <template repeat.for ="order of orders">
-                    <compose view="widgets/view.html"></compose>
-                </template>
-                
+                <tr repeat.for ="order of orders">
+                  <td class="col-xs-4" >${order.Restaurant.Name}</td>
+                  <td class="col-xs-2" >${order.Deadline}</td>
+                  <td class="col-xs-2" >${order.Status}</td>
+                  <td class="col-xs-2" >${order.id}</td>
+                    <td>
+                        <a href="#" class="btn glyphicon glyphicon-pencil" click.delegate="" ></a>
+                        <a href="#" class="btn glyphicon glyphicon-remove" click.delegate="$parent.deleteOrder(order)"></a>
+                    </td>
+                </tr>
                 <tr>
                     <td>
                         <input class="form-control" type="text" value.bind="newItem.RestaurantName"/>
