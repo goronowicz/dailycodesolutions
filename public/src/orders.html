@@ -11,15 +11,29 @@
                 </tr>
             </thead>
             <tbody >
+
                 <tr repeat.for ="order of orders">
+                  <template if.bind="!order.isEdit">
                   <td class="col-xs-4" >${order.Restaurant.Name}</td>
                   <td class="col-xs-2" >${order.Deadline}</td>
                   <td class="col-xs-2" >${order.Status}</td>
                   <td class="col-xs-2" >${order.id}</td>
                     <td>
-                        <a href="#" class="btn glyphicon glyphicon-pencil" click.delegate="" ></a>
+                        <a href="#" class="btn glyphicon glyphicon-pencil" click.delegate="$parent.editOrder(order)" ></a>
                         <a href="#" class="btn glyphicon glyphicon-remove" click.delegate="$parent.deleteOrder(order)"></a>
                     </td>
+                  </template>
+                  <template if.bind="order.isEdit">
+                    <td class="col-xs-4" > <input class="form-control" value.bind="order.Restaurant.Name"/></td>
+                    <td class="col-xs-2" > <input class="form-control" value.bind="order.Deadline" type="date"/></td>
+                    <td class="col-xs-2" ></td>
+                    <td class="col-xs-2" ></td>
+                      <td>
+                          <a href="#" class="btn glyphicon glyphicon-floppy-saved" click.delegate="$parent.saveOrder(order)"></a>
+                      </td>
+                  </template>
+
+
                 </tr>
                 <tr>
                     <td>
