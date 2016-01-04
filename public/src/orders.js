@@ -1,15 +1,16 @@
 ﻿import {inject} from 'aurelia-framework';
 import {HttpClient} from 'aurelia-http-client';
-
-@inject(HttpClient)
+import * as io from 'socket.io-client';
+@inject(HttpClient,io)
 export class Orders {
-    constructor(http){
+    constructor(http, io){
 
-        http.configure(conf =>
-            conf.withUrl('http://localhost:2403/'))
+        http.configure(config  => {
+            config.withBaseUrl('http://localhost:2403/')});
 
         this.http = http;
         this.isEdit = false;
+        this.io = io;
     };
 
     loadRecords() {
@@ -19,10 +20,10 @@ export class Orders {
 
     activate() {
         this.loadRecords();
-
-        window.dpd.order.on('create', () => this.loadRecords());
-        window.dpd.order.on('update', () => this.loadRecords());
-        window.dpd.order.on('delete', () => this.loadRecords());
+         this.socket = io.connect('http://localhost:2403/');
+         this.socket.on('order:create', () => this.loadRecords());
+         this.socket.on('order:update', () => this.loadRecords());
+         this.socket.on('order:delete', () => this.loadRecords());
     };
 
     plainObject = {
