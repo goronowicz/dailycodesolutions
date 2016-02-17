@@ -56,7 +56,19 @@ export class Orders {
     };
 
     editOrder(order){
+        order.Copy = JSON.stringify(order);
         order.isEdit = true;
+    };
+
+    cancelOrder(order){
+      let cpy = JSON.parse(order.Copy);
+
+      for (let key of Object.keys(cpy))
+      {
+        order[key] = cpy[key];
+      }
+      order.isEdit = false;
+      order.Copy = null;
     };
 
     saveOrder(order){

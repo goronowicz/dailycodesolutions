@@ -17,6 +17,7 @@ System.config({
   map: {
     "-a": "npm:babel-core@5.8.34",
     "-a-runtime": "npm:babel-runtime@5.8.34",
+    "Eonasdan/bootstrap-datetimepicker": "github:Eonasdan/bootstrap-datetimepicker@4.17.37",
     "aurelia-animator-css": "github:aurelia/animator-css@0.15.0",
     "aurelia-binding": "github:aurelia/binding@0.8.6",
     "aurelia-bootstrapper": "github:aurelia/bootstrapper@0.16.0",
@@ -48,6 +49,9 @@ System.config({
     "css": "github:systemjs/plugin-css@0.1.20",
     "fetch": "github:github/fetch@0.9.0",
     "font-awesome": "npm:font-awesome@4.5.0",
+    "jquery": "npm:jquery@2.2.0",
+    "jquery-ui": "github:components/jqueryui@1.11.4",
+    "moment": "github:moment/moment@2.11.1",
     "socket.io-client": "npm:socket.io-client@1.3.7",
     "github:aurelia/animator-css@0.15.0": {
       "aurelia-metadata": "github:aurelia/metadata@0.7.3",
@@ -166,6 +170,9 @@ System.config({
       "aurelia-task-queue": "github:aurelia/task-queue@0.6.2",
       "core-js": "npm:core-js@0.9.18"
     },
+    "github:components/jqueryui@1.11.4": {
+      "jquery": "npm:jquery@2.2.0"
+    },
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.3.0"
     },
@@ -236,7 +243,7 @@ System.config({
       "browserify-zlib": "npm:browserify-zlib@0.1.4"
     },
     "github:twbs/bootstrap@3.3.6": {
-      "jquery": "github:components/jquery@2.1.4"
+      "jquery": "github:components/jquery@2.2.0"
     },
     "npm:amdefine@1.0.0": {
       "fs": "github:jspm/nodelibs-fs@0.1.2",
