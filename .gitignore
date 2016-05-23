@@ -1,1 +1,5 @@
 .dpd/
+public/node_modules/
+public/jspm_packages/system.src.js
+public/jspm_packages/
+public/dist/

@@ -1,0 +1,168 @@
+﻿<!-- ko with: dishes -->
+<form role="form">
+    <h2 data-bind="if: !supplied()">Zbieranie zamówień</h2>
+    <h2 data-bind="if: supplied()">Zamówienie</h2>
+
+    <hr />
+    <ul class="text-danger" data-bind="foreach: errors">
+        <li data-bind="text: $data"></li>
+    </ul>
+    <div class="form-group row">
+        <div class="col-xs-6">
+            <h4>Restauracja: <b><span data-bind="text: supplier"></span></b></h4>
+            <h5>Link do zamówienia: <a class="link" data-bind="href: orderLink, text: orderLink, click: copyToClipboard"></a></h5>
+        </div>
+        <div class="col-xs-6">
+            <h4 class="text-right">Deadline: <b><span data-bind="text: deadLineDisp"></span></b></h4>
+        </div>
+    </div>
+    <h3>Zostało: <span data-bind="timer: countdown"></span></h3>
+    <div>
+        <table class="table table-bordered table-striped table-hover sortable" style="width: 91% !important">
+            <thead>
+                <tr>
+                    <th class="col-xs-3" onclick="sort();" data-defaultsort="asc" data-sortcolumn="0" data-sortkey="0-1">Kto</th>
+                    <th class="col-xs-4" onclick="sort();" data-defaultsort="asc" data-sortcolumn="0" data-sortkey="0-1">Co</th>
+                    <th class="col-xs-2" onclick="sort();" data-defaultsort="asc" data-sortcolumn="0" data-sortkey="0-1">Cena</th>
+                    <th class="col-xs-2" onclick="sort();" data-defaultsort="asc" data-sortcolumn="0" data-sortkey="0-1">Wpłacone</th>
+                    <!-- ko if: !supplied() -->
+                    <th>Action</th>
+                    <!-- /ko -->
+                </tr>
+            </thead>
+            <tbody>
+                <tr></tr>
+                <!-- ko foreach: table().DishList -->
+                <tr>
+                    <td><div data-bind="text: Owner" /></td>
+                    <td>
+                        <div class="input-group" style="width: 100%;">
+                            <input type="text" class="form-control" data-bind="value: Meal, event:{ change :  $parent.UpdateDish}" />
+                        </div>
+                    </td>
+                    <td>
+                        <div class="input-group">
+
+                            @Html.TextBox("price", 0, new
+                   {
+                       @class = "form-control",
+                       @data_bind = "value: Price, event:{ change :  $parent.UpdateDish}"
+                   })
+                            <div class="input-group-addon">@Resources.Resources.currency</div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="input-group">
+                            <input type="text" class="form-control" data-bind="value: Payment, event:{ change :  $parent.UpdateDish}" />
+                            <div class="input-group-addon">@Resources.Resources.currency</div>
+                        </div>
+                    </td>
+                    <!-- ko if: !$parent.supplied() -->
+                    <td>
+                        <span class="glyphicon glyphicon-minus-sign" aria-hidden="true" data-toggle="modal"
+                              data-target="#DeleteDishConfirm" data-bind="click: $parent.addItemToDelete"></span>
+                    </td>
+                    <!-- /ko -->
+                </tr>
+                <!-- /ko -->
+                <!-- ko if: editing -->
+                <tr data-bind="visible: current().IsVisible">
+
+                    <td>
+                        <div class="input-group" style="width: 100%;">
+                            <input type="text" style="width: 100%" class="form-control" data-bind="value: current().Owner, event:{ change :  CreateDish}" />
+                        </div>
+                    </td>
+                    <td>
+                        <div class="input-group" style="width: 100%;">
+                            <input type="text" style="width: 100%" class="form-control" data-bind="value: current().Meal, event:{ change :  CreateDish}" />
+                        </div>
+                    </td>
+                    <td>
+                        <div class="input-group">
+                            <input type="text" style="width: 100%" class="form-control" data-bind="value: current().Price, event:{ change :  CreateDish}" />
+                            <div class="input-group-addon">@Resources.Resources.currency</div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="input-group">
+                            <input type="text" style="width: 100%" class="form-control" data-bind="value: current().Payment, event:{ change :  CreateDish}" />
+                            <div class="input-group-addon">@Resources.Resources.currency</div>
+                        </div>
+                    </td>
+                    <!-- ko if: !supplied() -->
+                    <td></td>
+                    <!-- /ko-->
+                </tr>
+                <!-- /ko-->
+            </tbody>          
+        </table>
+
+    </div>
+    <!-- ko if: editing() -->
+    <div class="form-group row">
+        <div class="col-xs-9"></div>
+        <div class="col-xs-2">
+            <button type="submit" class="btn btn-default btn-block" style="width: 97%" data-bind="click: goAddNewDishOrderView">Dodaj zamówienie</button>
+        </div>
+    </div>
+    <!-- /ko-->
+    <!-- ko if: (isOwner() && !supplied()) -->
+    <div class="form-group row">
+        <div class="col-xs-9"></div>
+        <div class="col-xs-2">
+            <button type="submit" class="btn btn-default btn-block" style="width: 97%" data-bind="click: goToSummary">Zamów</button>
+        </div>
+    </div>
+    <!-- /ko -->
+
+</form>
+
+<!-- Modal templates -->
+
+<div class="modal fade" id="DeleteDishConfirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">siur?</h4>
+            </div>
+            <div class="modal-body">
+                Czy aby napewno usunąć?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" data-bind="click: removeItemToDelete">Close</button>
+                <button type="button" class="btn btn-primary" data-bind="click: DeleteDish" data-dismiss="modal">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<script id="dishModal" class="modal-dialog" type="text/html">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Podaj dane</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" role="form" data-bind="submit: action">
+                        <div class="form-group">
+                            <label for="ModalFirstName" class="col-md-3 control-label">Imię i nazwisko</label>
+                            <div class="col-md-6">
+                                <input type="text" id="ModalFirstName" class="form-control" data-bind="value: name, hasFocus: true" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bind="click:action" id="save-changes">OK</button>
+                </div>
+
+            </div>
+        </div>
+    </script>
+
+    <div data-bind="bootstrapModal:modal" class="modal fade" id="LOSmodal" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static"></div>*@
+<br />
+@Html.Partial("_Chat")
+<!-- /ko -->

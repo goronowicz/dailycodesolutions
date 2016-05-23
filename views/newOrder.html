@@ -1,0 +1,789 @@
+﻿
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>LOS Application</title>
+    <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width" />
+    <link href="/Content/jquery-clockpicker.min.css" rel="stylesheet"/>
+<link href="/Content/bootstrap.css" rel="stylesheet"/>
+<link href="/Content/bootstrap-sortable.css" rel="stylesheet"/>
+<link href="/Content/Site.css" rel="stylesheet"/>
+<link href="/Content/chat.css" rel="stylesheet"/>
+
+    <script src="/Scripts/modernizr-2.8.3.js"></script>
+
+</head>
+<body>
+    <div data-bind="visible: loading">Loading...</div>
+    <div style="display: none" data-bind="visible: true" class="container body-content">
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a href="#" class="navbar-brand" data-bind="if: !loggedIn()">LOS</a>
+                    <a href="#" class="navbar-brand" data-bind="if: loggedIn, click: navigateToOrderList">LOS</a>
+                </div>
+
+              
+
+                <div data-bind="if: !loggedIn()">
+                    <div class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav">
+                            <li><a href="#" data-bind="click: navigateToOrderList">Zamówienia</a></li>
+                            <li><a href="#" data-bind="click: navigateToLogin">Zaloguj się</a></li>
+                        </ul>                      
+                    </div>
+
+                </div>
+                <div data-bind="if: loggedIn">
+                    <div class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav">
+                            <li><a href="#" data-bind="click: navigateToOrderList">Zamówienia</a></li>
+                            <li><a href="#" data-bind="click: navigateToCreate">Złóż zamówienie</a></li>  
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right" data-bind="with: user">
+                            <li>
+                                <span class="navbar-text nofloat">Hello, <a href="#" class="navbar-link" data-bind="text: name, click: manage"></a>!</span>
+                            </li>
+                            <li><a href="#" data-bind="click: logOff">Log off</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div data-bind="foreach: errors" class="padding-error">
+            <p class="text-danger" data-bind="text: $data"></p>
+        </div>
+        <!-- ko with: home -->
+<div class="jumbotron">
+    <h1>ASP.NET</h1>
+    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS, and JavaScript.</p>
+    <p><a href="http://asp.net" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <h2>Getting started</h2>
+        <p>
+            ASP.NET Single Page Application (SPA) helps you build applications that include significant client-side interactions using HTML, CSS, and JavaScript.
+            It's now easier than ever before to getting started writing highly interactive web applications.
+        </p>
+        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=273732">Learn more &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Get more libraries</h2>
+        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
+        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Web Hosting</h2>
+        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
+        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+    </div>
+</div>
+<!-- /ko -->
+
+        <!-- ko with: login -->
+<h2>Log in</h2>
+
+<div class="row">
+    <section class="col-md-8">
+        <form class="form-horizontal" role="form">
+            <h4>Use a local account to log in.</h4>
+            <hr />
+            <ul class="text-danger" data-bind="foreach: errors">
+                <li data-bind="text: $data"></li>
+            </ul>
+            <div class="form-group">
+                <label for="LoginUserName" class="col-md-2 control-label">Login</label>
+                <div class="col-md-6">
+                    <input type="text" id="LoginUserName" class="form-control" data-bind="value: userName, hasFocus: true" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="LoginPassword" class="col-md-2 control-label">Password</label>
+                <div class="col-md-6">
+                    <input type="password" id="LoginPassword" class="form-control" data-bind="value: password" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <div class="checkbox">
+                        <input type="checkbox" id="LoginRememberMe" data-bind="checked: rememberMe" />
+                        <label for="LoginRememberMe">Remember me?</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <button type="submit" class="btn btn-default" data-bind="click: login, disable: loggingIn">Log in</button>
+                </div>
+            </div>
+            <p><a href="#" data-bind="click: register">Register</a> if you don't have a local account.</p>
+
+        </form>
+    </section>
+</div>
+<!-- /ko -->
+
+        <!-- ko with: register -->
+<h2>Register</h2><br />
+<form class="form-horizontal" role="form">
+    <h4>Basic information</h4>
+    <hr />
+    <ul class="text-danger" data-bind="foreach: errors">
+        <li data-bind="text: $data"></li>
+    </ul>
+    <div class="form-group">
+        <label for="RegisterUserName" class="col-md-2 control-label">Login</label>
+        <div class="col-md-4">
+            <input type="email" id="RegisterUserName" class="form-control" data-bind="value: userName, hasFocus: true" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="RegisterPassword" class="col-md-2 control-label">Password</label>
+        <div class="col-md-4">
+            <input type="password" id="RegisterPassword" class="form-control" data-bind="value: password" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="RegisterConfirmPassword" class="col-md-2 control-label">Repeat password</label>
+        <div class="col-md-4">
+            <input type="password" id="RegisterConfirmPassword" class="form-control" data-bind="value: confirmPassword" />
+        </div>
+    </div>
+   
+</form><br />
+<form class="form-horizontal" role="form">
+    <h4>Additional information</h4>
+    <hr />
+    <div class="form-group">
+        <label for="RegisterName" class="col-md-2 control-label">Name or nickname</label>
+        <div class="col-md-4">
+            <input type="text" id="RegisterName" class="form-control" data-bind="value: name" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="RegisterContact" class="col-md-2 control-label">Contact e-mail</label>
+        <div class="col-md-4">
+            <input type="email" id="RegisterContact" class="form-control" data-bind="value: contact" />
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <button type="submit" class="btn btn-default" data-bind="click: register, disable: registering">Register</button>
+        </div>
+    </div>
+      
+    <br />
+    <p><a href="#" data-bind="click: login">Log in</a> if you already have a local account.</p>
+</form>
+<!-- /ko -->
+
+        <!-- ko with: registerExternal -->
+<h2>Register</h2>
+<form class="form-horizontal" role="form">
+    <h4 data-bind="text: 'Associate your ' + loginProvider() + ' account.'"></h4>
+    <hr />
+    <p class="text-success">
+        You've successfully authenticated with <strong data-bind="text: loginProvider"></strong>.
+            Please enter a user name for this site below and click the Register button to finish logging in.
+    </p>
+    <ul class="text-danger" data-bind="foreach: errors">
+        <li data-bind="text: $data"></li>
+    </ul>
+    <div class="form-group">
+        <label for="RegisterExternalUserName" class="col-md-2 control-label">User name</label>
+        <div class="col-md-10">
+            <input type="text" id="RegisterExternalUserName" class="form-control" data-bind="value: userName, hasFocus: true" />
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <button type="submit" class="btn btn-default" data-bind="click: register, disable: registering">Sign up</button>
+        </div>
+    </div>
+</form>
+<!-- /ko -->
+
+        <!-- ko with: manage -->
+<div data-bind="visible: loading">Loading...</div>
+<div data-bind="visible: !loading()">
+    <p class="text-success" data-bind="text: message"></p>
+    <h2>Manage Account</h2>
+    <section>
+        <div data-bind="with: changePassword">
+            <p class="text-info">You're logged in as <strong data-bind="text: name"></strong>.</p>
+            <form class="form-horizontal" role="form">
+                <h4>Change your password</h4>
+                <hr />
+                <ul class="text-danger" data-bind="foreach: errors">
+                    <li data-bind="text: $data"></li>
+                </ul>
+                <div class="form-group">
+                    <label for="ChangePasswordOldPassword" class="col-md-2 control-label">Old password</label>
+                    <div class="col-md-10">
+                        <input type="password" id="ChangePasswordOldPassword" class="form-control" data-bind="value: oldPassword" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="ChangePasswordNewPassword" class="col-md-2 control-label">New password</label>
+                    <div class="col-md-10">
+                        <input type="password" id="ChangePasswordNewPassword" class="form-control" data-bind="value: newPassword" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="ChangePasswordConfirmPassword" class="col-md-2 control-label">Confirm new password</label>
+                    <div class="col-md-10">
+                        <input type="password" id="ChangePasswordConfirmPassword" class="form-control" data-bind="value: confirmPassword" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <button type="submit" class="btn btn-default" data-bind="click: change, disable: changing">Change password</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div data-bind="with: setPassword">
+            <p>You do not have a local username/password for this site. Add a local account so you can log in without an external login.</p>
+            <form class="form-horizontal" role="form">
+                <h4>Create Local Login</h4>
+                <hr />
+                <ul class="text-danger" data-bind="foreach: errors">
+                    <li data-bind="text: $data"></li>
+                </ul>
+                <div class="form-group">
+                    <label for="SetPasswordNewPassword" class="col-md-2 control-label">New password</label>
+                    <div class="col-md-10">
+                        <input type="password" id="SetPasswordNewPassword" class="form-control" data-bind="value: newPassword" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="SetPasswordConfirmPassword" class="col-md-2 control-label">Confirm new password</label>
+                    <div class="col-md-10">
+                        <input type="password" id="SetPasswordConfirmPassword" class="form-control" data-bind="value: confirmPassword" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <button type="submit" class="btn btn-default" data-bind="click: set, disable: setting">Set password</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+    <section>
+        <ul class="text-danger" data-bind="foreach: errors">
+            <li data-bind="text: $data"></li>
+        </ul>
+        <div data-bind="if: logins().length > 0">
+            <h4>Registered logins</h4>
+            <table class="table">
+                <tbody data-bind="foreach: logins">
+                    <tr>
+                        <td data-bind="text: loginProvider"></td>
+                        <td>
+                            <div data-bind="if: $parent.canRemoveLogin">
+                                <form>
+                                    <div>
+                                        <button type="submit" class="btn btn-default" data-bind="attr: { title: 'Remove this ' + loginProvider() + ' credential from your account' }, click: remove, disable: removing">Remove</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <span data-bind="if: !$parent.canRemoveLogin()">&nbsp;</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+    </section>
+</div>
+<!-- /ko -->
+
+        <!-- ko with: confirm -->
+<h2>Confirm your e-mail address</h2>
+<div class="row">
+    <p>Thank you! Your account has been created and an email has been sent for activation!</p>
+</div>
+<!-- /ko -->
+        <!-- ko with: create-->
+<h2>Nowe zamówienie</h2>
+<form role="form">
+    <hr />
+    <ul class="text-danger" data-bind="foreach: errors">
+        <li data-bind="text: $data"></li>
+    </ul>
+
+    <div class="form-group row">
+        <div class="col-xs-6">
+            <label for="OrderRestaurant">Restauracja</label>
+            <input id="OrderRestaurant" type="text" data-bind="value: restaurant" class="form-control" />
+        </div>
+        <div class="col-xs-2">
+            <label for="OrderDeadline">Deadline</label>
+            <div class="input-group bootstrap-timepicker">
+                <input id="input-a" type="text" data-bind="value: deadline" class="form-control"  value="" data-default="20:48" onclick="showClock();">             
+                <span class="input-group-addon">
+                    <i class="glyphicon glyphicon-time"></i>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-xs-2">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" checked data-bind="checked: notify">Powiadom innych
+                </label>
+            </div>
+        </div>
+
+        <div class="col-xs-6">
+            <input type="text" class="form-control" id="OrderEmails" data-bind="value: emails">
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-xs-8">
+            <input type="text" class="form-control" id="OrderTitle" data-bind="value: title">
+        </div>
+    </div><div class="form-group row">
+        <div class="col-xs-8">
+            <textarea class="form-control" id="OrderText" rows="6" data-bind="value: tekst"></textarea>
+        </div>
+    </div><div class="form-group row">
+        <div class="col-xs-6">
+        </div>
+        <div class="col-xs-2">
+            <button type="submit" class="btn btn-default pull-right" data-bind="click: createOrd, disable: ordering">Zbierz zamówienia</button>
+        </div>
+    </div>
+  
+</form>
+<!-- /ko -->
+        <!-- ko with: orderList -->
+<form>
+    <h2>Zamówienia</h2>
+    <hr />
+    <div id="process" style="margin-left: auto;margin-right: auto;">
+        <div class="progress progress-striped active" style="width: 100%; height: 30px;">
+            <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%; line-height:30px;">
+                Waiting for getting data ...
+            </div>
+        </div>
+    </div>
+    <div id="complete" style="display:none;">
+        <div class="form-group row">
+            <div class="col-xs-6">
+                <!-- ko if: loggedIn -->
+                <button class="btn btn-default" data-bind="click: $parent.navigateToCreate">
+                    <span class="glyphicon glyphicon-plus"></span>Nowe Zamówienie</button>
+                <!-- /ko -->
+            </div>
+            <div class="col-xs-6">
+                <h3>Czas: <b><span data-bind="text: clock"></span></b></h3>
+            </div>
+        </div>
+        <div class="cols-xs-12">
+            <table class="table table-bordered table-striped table-hover sortable" style="width: 91% !important">
+                <thead>
+                    <tr>
+                        <th class="col-xs-5" onclick="sort();" data-defaultsort="asc" data-sortcolumn="0" data-sortkey="0-1"> Restaurant</th>
+                        <th class="col-xs-2" onclick="sort();" data-defaultsort="asc" data-sortcolumn="1" data-sortkey="0-1"> Deadline</th>
+                        <th class="col-xs-3" onclick="sort();" data-defaultsort="asc" data-sortcolumn="1" data-sortkey="0-1"> Status</th>
+                        <th class="col-xs-2">Action</th>
+                    </tr>
+                </thead>
+                <tbody data-bind="foreach: orderList">
+                    <tr>
+                        <td><div data-bind="text: supplier" /></td>
+                        <td><div data-bind="deadLineBinding: deadLine" /></td>
+                        <td><div data-bind="text: $parent.getState($data)" /></td>
+                        <td class="text-center"><button data-bind="click: $parent.action" class="btn btn-info btn-sm ">Szczegóły</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</form>
+<!-- /ko -->
+
+        <!-- ko with: dishes -->
+<form role="form">
+    <h2 data-bind="if: !supplied()">Zbieranie zamówień</h2>
+    <h2 data-bind="if: supplied()">Zamówienie</h2>
+
+    <hr />
+    <ul class="text-danger" data-bind="foreach: errors">
+        <li data-bind="text: $data"></li>
+    </ul>
+    <div class="form-group row">
+        <div class="col-xs-6">
+            <h4>Restauracja: <b><span data-bind="text: supplier"></span></b></h4>
+            <h5>Link do zamówienia: <a class="link" data-bind="href: orderLink, text: orderLink, click: copyToClipboard"></a></h5>
+        </div>
+        <div class="col-xs-6">
+            <h4 class="text-right">Deadline: <b><span data-bind="text: deadLineDisp"></span></b></h4>
+        </div>
+    </div>
+    <h3>Zostało: <span data-bind="timer: countdown"></span></h3>
+    <div>
+        <table class="table table-bordered table-striped table-hover sortable" style="width: 91% !important">
+            <thead>
+                <tr>
+                    <th class="col-xs-3" onclick="sort();" data-defaultsort="asc" data-sortcolumn="0" data-sortkey="0-1">Kto</th>
+                    <th class="col-xs-4" onclick="sort();" data-defaultsort="asc" data-sortcolumn="0" data-sortkey="0-1">Co</th>
+                    <th class="col-xs-2" onclick="sort();" data-defaultsort="asc" data-sortcolumn="0" data-sortkey="0-1">Cena</th>
+                    <th class="col-xs-2" onclick="sort();" data-defaultsort="asc" data-sortcolumn="0" data-sortkey="0-1">Wpłacone</th>
+                    <!-- ko if: !supplied() -->
+                    <th>Action</th>
+                    <!-- /ko -->
+                </tr>
+            </thead>
+            <tbody>
+                <tr></tr>
+                <!-- ko foreach: table().DishList -->
+                <tr>
+                    <td><div data-bind="text: Owner" /></td>
+                    <td>
+                        <div class="input-group" style="width: 100%;">
+                            <input type="text" class="form-control" data-bind="value: Meal, event:{ change :  $parent.UpdateDish}" />
+                        </div>
+                    </td>
+                    <td>
+                        <div class="input-group">
+
+                            <input class="form-control" data-bind="value: Price, event:{ change :  $parent.UpdateDish}" id="price" name="price" type="text" value="0" />
+                            <div class="input-group-addon">zł</div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="input-group">
+                            <input type="text" class="form-control" data-bind="value: Payment, event:{ change :  $parent.UpdateDish}" />
+                            <div class="input-group-addon">zł</div>
+                        </div>
+                    </td>
+                    <!-- ko if: !$parent.supplied() -->
+                    <td>
+                        <span class="glyphicon glyphicon-minus-sign" aria-hidden="true" data-toggle="modal"
+                              data-target="#DeleteDishConfirm" data-bind="click: $parent.addItemToDelete"></span>
+                    </td>
+                    <!-- /ko -->
+                </tr>
+                <!-- /ko -->
+                <!-- ko if: editing -->
+                <tr data-bind="visible: current().IsVisible">
+
+                    <td>
+                        <div class="input-group" style="width: 100%;">
+                            <input type="text" style="width: 100%" class="form-control" data-bind="value: current().Owner, event:{ change :  CreateDish}" />
+                        </div>
+                    </td>
+                    <td>
+                        <div class="input-group" style="width: 100%;">
+                            <input type="text" style="width: 100%" class="form-control" data-bind="value: current().Meal, event:{ change :  CreateDish}" />
+                        </div>
+                    </td>
+                    <td>
+                        <div class="input-group">
+                            <input type="text" style="width: 100%" class="form-control" data-bind="value: current().Price, event:{ change :  CreateDish}" />
+                            <div class="input-group-addon">zł</div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="input-group">
+                            <input type="text" style="width: 100%" class="form-control" data-bind="value: current().Payment, event:{ change :  CreateDish}" />
+                            <div class="input-group-addon">zł</div>
+                        </div>
+                    </td>
+                    <!-- ko if: !supplied() -->
+                    <td></td>
+                    <!-- /ko-->
+                </tr>
+                <!-- /ko-->
+            </tbody>          
+        </table>
+
+    </div>
+    <!-- ko if: editing() -->
+    <div class="form-group row">
+        <div class="col-xs-9"></div>
+        <div class="col-xs-2">
+            <button type="submit" class="btn btn-default btn-block" style="width: 97%" data-bind="click: goAddNewDishOrderView">Dodaj zamówienie</button>
+        </div>
+    </div>
+    <!-- /ko-->
+    <!-- ko if: (isOwner() && !supplied()) -->
+    <div class="form-group row">
+        <div class="col-xs-9"></div>
+        <div class="col-xs-2">
+            <button type="submit" class="btn btn-default btn-block" style="width: 97%" data-bind="click: goToSummary">Zamów</button>
+        </div>
+    </div>
+    <!-- /ko -->
+
+</form>
+
+<!-- Modal templates -->
+
+<div class="modal fade" id="DeleteDishConfirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">siur?</h4>
+            </div>
+            <div class="modal-body">
+                Czy aby napewno usunąć?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" data-bind="click: removeItemToDelete">Close</button>
+                <button type="button" class="btn btn-primary" data-bind="click: DeleteDish" data-dismiss="modal">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<br />
+<!-- ko with: chat -->
+
+<div class="row chat" style="width: 91% !important">
+    <div id="discussion" class="discussionDiv list-group"></div>
+    <div>
+        <form data-bind="submit: enterSend">
+            <div class="input-group">
+                <input type="text" style="max-width: none;" data-bind="value: message" class="form-control">
+                <span class="input-group-btn">
+                    <input type="submit" class="btn btn-default" data-bind="click: send " value="Send">
+                </span>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<!-- /ko -->
+<!-- /ko -->
+
+	    <!-- ko with: waitingForOrder -->
+
+<form>
+    <h2>Oczekiwanie na zamówienie</h2>
+    <hr />
+    <div id="process" style="margin-left: auto;margin-right: auto;">
+        <div class="progress progress-striped active" style="width: 100%; height: 30px;">
+            <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%; line-height:30px;">
+                Waiting for getting data ...
+            </div>
+        </div>
+    </div>
+    <div id="complete" style="display:none;">
+        <div class="form-group row" style="width: 91% !important">
+            <div class="col-md-6" style="display:inline">
+                <p>Restauracja: <strong data-bind="text: supplier"></strong></p>
+                <h5>Link do zamówienia: <a class="link" data-bind="href: orderLink, text: orderLink, click: copyToClipboard"></a></h5>
+            </div>
+            <div class="col-md-6" style="text-align:right">
+                <p>Deadline: <strong data-bind="text: deadLineDisp"></strong></p>
+            </div>
+        </div>
+
+        <h3>Czas oczekiwania: <span data-bind="text: time"></span></h3>
+        <div class="cols-xs-8">
+            <table class="table table-bordered table-striped table-hover sortable" style="width: 91% !important">
+                <thead>
+                    <tr>
+                        <th class="col-xs-5" onclick="sort();" data-defaultsort="asc" data-sortcolumn="0" data-sortkey="0-1">Co</th>
+                        <th class="col-xs-2" onclick="sort();" data-defaultsort="asc" data-sortcolumn="0" data-sortkey="0-1">Ilość</th>
+                        <th class="col-xs-2" onclick="sort();" data-defaultsort="asc" data-sortcolumn="0" data-sortkey="0-1">Cena</th>
+                        <th class="col-xs-2" onclick="sort();" data-defaultsort="asc" data-sortcolumn="0" data-sortkey="0-1">Suma</th>
+                    </tr>
+                </thead>
+                <tbody data-bind="foreach: dishListWithoutDuplicates">
+                    <tr>
+                        <td><div data-bind="text: meal" /></td>
+                        <td><div data-bind="text: $parent.count($data)" /></td>
+                        <td><span data-bind="text: price.toFixed(2)">zł</span></td>
+                        <td><span data-bind="text: $parent.sum(price, $parent.count($data))">zł</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="form-group row">
+            <div class="col-xs-9"></div>
+            <div class="col-xs-2">
+                <h3>Suma  <span data-bind="text: suma"></span>zł</h3>
+            </div>
+        </div>
+        <!-- ko if: !supplied() -->
+        <div class="form-group row">
+            <div class="col-xs-9"></div>
+            <div class="col-xs-2">
+                <button type="submit" class="btn btn-default btn-block pull-left" data-bind="click: goToSummary">Dostarczone</button>
+            </div>
+        </div>
+        <!-- /ko-->
+    </div>
+</form>
+
+<br />
+<!-- ko with: chat -->
+
+<div class="row chat" style="width: 91% !important">
+    <div id="discussion" class="discussionDiv list-group"></div>
+    <div>
+        <form data-bind="submit: enterSend">
+            <div class="input-group">
+                <input type="text" style="max-width: none;" data-bind="value: message" class="form-control">
+                <span class="input-group-btn">
+                    <input type="submit" class="btn btn-default" data-bind="click: send " value="Send">
+                </span>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<!-- /ko -->
+<!-- /ko -->
+
+        <!-- ko with: summary -->
+<form>
+    <h2>Zamówienie</h2>
+    <hr />
+
+    <div class="form-group row" style="width: 91% !important">
+        <div class="col-md-6" style="display:inline">
+            <p>Restauracja: <strong data-bind="text: supplier"></strong></p>
+            <h5>Link do zamówienia: <a class="link" data-bind="href: orderLink, text: orderLink, click: copyToClipboard"></a></h5>
+        </div>
+    </div>
+    <div class="cols-xs-8">
+        <table class="table table-bordered table-striped table-hover sortable" style="width: 91% !important">
+            <thead>
+                <tr>
+                    <th class="col-xs-5" onclick="sort();" data-defaultsort="asc" data-sortcolumn="0" data-sortkey="0-1">Co</th>
+                    <th class="col-xs-2" onclick="sort();" data-defaultsort="asc" data-sortcolumn="0" data-sortkey="0-1">Ilość</th>
+                    <th class="col-xs-2" onclick="sort();" data-defaultsort="asc" data-sortcolumn="0" data-sortkey="0-1">Cena</th>
+                    <th class="col-xs-2" onclick="sort();" data-defaultsort="asc" data-sortcolumn="0" data-sortkey="0-1">Suma</th>
+                </tr>
+            </thead>
+            <tbody data-bind="foreach: dishes">
+                <tr>
+                    <td><div data-bind="text: meal" /></td>
+                    <td><div data-bind="text: $parent.count($data)" /></td>
+                    <td><span data-bind="text: price.toFixed(2)"></span>zł</td>
+                    <td><span data-bind="text: $parent.sum(price, $parent.count($data))"></span>zł</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="form-group row">
+        <div class="col-xs-9"></div>
+        <div class="col-xs-2">
+            <h3>Suma:  <span data-bind="text: suma"></span>zł</h3>
+        </div>
+    </div>
+    <!-- ko if: (isOwner() && !supplied())-->
+    <div class="form-group row">
+        <div class="col-xs-9"></div>
+        <div class="col-xs-2">
+            <button type="submit" class="btn btn-default btn-block pull-left" data-bind="click: goToWaitingForOrder">Zamówienie złożone</button>
+        </div>
+    </div>
+    <!-- /ko -->
+
+    
+</form>
+<!-- /ko -->
+
+	    
+        <!-- Modal -->
+        <div class="modal fade" id="loginWindow" tabindex="-1" role="dialog" aria-labelledby="loginWindowLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        
+                        <h4 class="modal-title" id="loginWindowLabel">Podaj dane</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <label for="ModalFirstName" class="col-md-3 control-label">Imię i nazwisko</label>
+                                <div class="col-md-6">
+                                    <input type="text" id="ModalFirstName" class="form-control" />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" >Zapamiętaj</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+        <hr />
+        <footer>
+            <p>&copy; 2016 - LOS Application</p>
+        </footer>
+    </div>
+
+    <script src="/Scripts/jquery-2.1.1.js"></script>
+<script src="/Scripts/jquery.cookie.js"></script>
+
+    <script src="/Scripts/knockout-3.2.0.debug.js"></script>
+<script src="/Scripts/knockout.validation.debug.js"></script>
+<script src="/Scripts/knockout.mapping-latest.debug.js"></script>
+
+    <script src="/Scripts/jquery-clockpicker.min.js"></script>
+<script src="/Scripts/app/ajaxPrefilters.js"></script>
+<script src="/Scripts/app/app.datamodel.js"></script>
+<script src="/Scripts/app/app.viewmodel.js"></script>
+<script src="/Scripts/app/home.viewmodel.js"></script>
+<script src="/Scripts/app/confirm.viewmodel.js"></script>
+<script src="/Scripts/app/success.viewmodel.js"></script>
+<script src="/Scripts/app/login.viewmodel.js"></script>
+<script src="/Scripts/app/register.viewmodel.js"></script>
+<script src="/Scripts/app/registerExternal.viewmodel.js"></script>
+<script src="/Scripts/app/manage.viewmodel.js"></script>
+<script src="/Scripts/app/userInfo.viewmodel.js"></script>
+<script src="/Scripts/app/create.viewmodel.js"></script>
+<script src="/Scripts/app/_run.js"></script>
+<script src="/Scripts/app/orderList.viewmodel.js"></script>
+<script src="/Scripts/app/dishes.viewmodel.js"></script>
+<script src="/Scripts/clock.js"></script>
+<script src="/Scripts/jquery.signalR-2.1.1.min.js"></script>
+<script src="/Scripts/app/summary.viewmodel.js"></script>
+<script src="/Scripts/app/chat.viewmodel.js"></script>
+<script src="/Scripts/app/waitingForOrder.viewmodel.js"></script>
+<script src="/Scripts/app/login.window.viewmodel.js"></script>
+
+    <script src="/Scripts/bootstrap.js"></script>
+<script src="/Scripts/bootstrap-sortable.js"></script>
+<script src="/Scripts/respond.js"></script>
+
+
+    
+    <script src="/signalr/hubs"></script>
+
+
+
+<!-- Visual Studio Browser Link -->
+<script type="application/json" id="__browserLink_initializationData">
+    {"appName":"Chrome","requestId":"3b4e62f676984517bc3f3b2f4d331e51"}
+</script>
+<script type="text/javascript" src="http://localhost:53460/f0417cb70c9c4ec69912efa2abf2cfc6/browserLink" async="async"></script>
+<!-- End Browser Link -->
+
+</body>
+</html>

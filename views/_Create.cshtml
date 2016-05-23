@@ -1,0 +1,55 @@
+﻿<!-- ko with: create-->
+<h2>Nowe zamówienie</h2>
+<form role="form">
+    <hr />
+    <ul class="text-danger" data-bind="foreach: errors">
+        <li data-bind="text: $data"></li>
+    </ul>
+
+    <div class="form-group row">
+        <div class="col-xs-6">
+            <label for="OrderRestaurant">Restauracja</label>
+            <input id="OrderRestaurant" type="text" data-bind="value: restaurant" class="form-control" />
+        </div>
+        <div class="col-xs-2">
+            <label for="OrderDeadline">Deadline</label>
+            <div class="input-group bootstrap-timepicker">
+                <input id="input-a" type="text" data-bind="value: deadline" class="form-control"  value="" data-default="20:48" onclick="showClock();">             
+                <span class="input-group-addon">
+                    <i class="glyphicon glyphicon-time"></i>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-xs-2">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" checked data-bind="checked: notify">Powiadom innych
+                </label>
+            </div>
+        </div>
+
+        <div class="col-xs-6">
+            <input type="text" class="form-control" id="OrderEmails" data-bind="value: emails">
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-xs-8">
+            <input type="text" class="form-control" id="OrderTitle" data-bind="value: title">
+        </div>
+    </div><div class="form-group row">
+        <div class="col-xs-8">
+            <textarea class="form-control" id="OrderText" rows="6" data-bind="value: tekst"></textarea>
+        </div>
+    </div><div class="form-group row">
+        <div class="col-xs-6">
+        </div>
+        <div class="col-xs-2">
+            <button type="submit" class="btn btn-default pull-right" data-bind="click: createOrd, disable: ordering">Zbierz zamówienia</button>
+        </div>
+    </div>
+  
+</form>
+<!-- /ko -->
