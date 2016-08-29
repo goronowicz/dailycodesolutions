@@ -1,0 +1,62 @@
+<template>
+  <require from="widgets/login"></require>
+  <require from="widgets/date-picker"></require>
+  <div class="row">
+      <div class="col-md-3">
+        <h1>New order</h1>
+      </div>
+      <div class="col-md-offset-7 col-md-2">
+        <login></login>
+      </div>
+   </div>
+   <div class="row margin-bottom-10">
+      <div class="col-md-12">
+       <progress value="10" max="60" style="width:100%">10%</progress>
+      </div>
+   </div>
+   <div class="row margin-bottom-10">
+      <div class="col-md-8">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Restaurant" value.bind="Restaurant">
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="button">
+                <span class="glyphicon glyphicon-search"></span>
+              </button>
+            </span>
+            </div>
+        </div>
+      <div class="col-md-4">
+        <date-picker placeholder="Deadline" value.bind="Deadline"></date-picker>
+      </div>
+
+   </div>
+   <div class="row margin-bottom-10">
+     <div class="col-md-12">
+       <div class="input-group">
+         <span class="input-group-addon">
+                <input type="checkbox" aria-label="..." value.bind="Notify" > Notify
+          </span>
+         <input type="text" class="form-control" aria-label="..." value.bind="Recepients">
+      </div>
+     </div>
+   </div>
+   <div class="row margin-bottom-10">
+     <div class="col-md-12">
+     <input type="text" class="form-control" placeholder="Order from [Restaurant]" value.bind="Subject">
+   </div>
+   </div>
+   <div class="row margin-bottom-10">
+     <div class="col-md-12">
+     <textarea class="form-control" rows="6" value.bind="Description"></textarea>
+   </div>
+   </div>
+   <div class="row ">
+     <div class="col-md-offset-9 col-md-2">
+       <button class="btn btn-success" style="width:100%" click.trigger="collect">Collect</button>
+      </div>
+      <div class="col-md-1">
+        <button class="btn btn-default" style="width:100%" click.trigger="cancel">Cancel</button>
+      </div>
+   </div>
+
+</template>

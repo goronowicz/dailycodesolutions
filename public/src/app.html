@@ -3,7 +3,11 @@
 
   <nav-bar router.bind="router"></nav-bar>
 
-  <div class="page-host">
-    <router-view></router-view>
+  <div class="page-host container-fluid">
+    <div class="col-xs-offset-1 col-xs-10 router-view">
+      <div class="row">
+        <router-view></router-view>
+      </div>
+    </div>
   </div>
 </template>
