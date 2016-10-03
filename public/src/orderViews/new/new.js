@@ -4,28 +4,29 @@ import {OrderService} from '/src/services/orderService';
 
 @inject(Router, OrderService)
 export class New {
-
-  RestaurantName = '';
-  Deadline = new Date();
   Notify = true;
   Recepients = '';
+  Restaurants = null;
+  Deadline = new Date();
   Subject = null;
   Description = null;
-
-  Restaurants = null;
 
   constructor(router, orderService){
       this.router = router;
       this.orderService = orderService;
   };
 
-  activate(){
-    //todo bind restaurant to popup
+  activate(id){
+      this.orderService.loadOrder(id).then(o => order = o);
       this.orderService.loadRestaurnats().then(r => Restaurants = r );
   }
 
   collect(){
+    let order = {
+      Deadline = Deadline,
 
+    } 
+    this.orderService.addOrder(order);
   }
 
   cancel(){

@@ -18,6 +18,14 @@ export class OrderService {
         });
   }
 
+    loadOrder(id) {
+    var self= this;
+    return new Promise(function(resolve){
+      self.http.get('order/'+id.id)
+          .then(response => resolve(JSON.parse(response.response)));
+        });
+  }
+
   addOrder(destObject){
     let self = this;
     return new Promise(function(resolve){

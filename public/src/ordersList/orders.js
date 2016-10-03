@@ -58,7 +58,7 @@ export class Orders {
     goToOrder(order){
       if (order == undefined || order.Status == '') return;
 
-        this.router.navigateToRoute(order.Status, {id: order.id} );
+        this.router.navigateToRoute('orderDetails', {id: order.id, order = order} );
     };
 
     creatOrder(){
